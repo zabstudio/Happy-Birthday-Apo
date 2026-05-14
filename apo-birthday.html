@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 26th Birthday, Apo! 🎂✨</title>
+
+<!-- ===== PLACEHOLDER CONFIG — EDIT THESE ===== -->
+<script>
+  // If you have a background music file, put the path here:
+  const MUSIC_SRC = ""; // e.g. "happy-birthday.mp3"
+  // Your name for the closing section:
+  const YOUR_NAME = "Your Favourite Person";
+</script>
+<!-- ============================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Caveat:wght@400;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<style>
+  :root {
+    --lavender: #c8b4e8;
+    --blush: #f5c6d0;
+    --peach: #ffd4b3;
+    --gold: #f7c84a;
+    --deep-purple: #5c3d7a;
+    --soft-pink: #e8a0b0;
+    --cream: #fff9f5;
+    --text-dark: #3a2040;
+    --text-mid: #6b4c7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(135deg, #f5e6ff 0%, #ffe0f0 30%, #fff0e0 60%, #fff5e6 100%);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ===== PARTICLES CANVAS ===== */
+  #particles-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== MUSIC BUTTON ===== */
+  #music-btn {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--gold), var(--peach));
+    border: none;
+    border-radius: 50%;
+    width: 48px; height: 48px;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(247,200,74,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #music-btn:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(247,200,74,0.5); }
+
+  /* ===== SECTION WRAPPERS ===== */
+  section {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== SECTION 1: TIME TRAVEL ===== */
+  #section-moon {
+    background: linear-gradient(160deg, #1a0a2e 0%, #2d1155 40%, #0d1b3e 100%);
+    color: white;
+  }
+
+  .star-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  .moon-card {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 0 60px rgba(200,180,232,0.05);
+  }
+
+  .moon-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-style: italic;
+    color: #e8d5ff;
+    margin-bottom: 8px;
+  }
+
+  .moon-card p.subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #c8b4e8;
+    margin-bottom: 32px;
+  }
+
+  .date-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .date-input-wrap label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #d4b8f0;
+    text-align: left;
+  }
+
+  .date-input-wrap input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(200,180,232,0.4);
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Lato', sans-serif;
+  }
+  .date-input-wrap input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(247,200,74,0.2);
+  }
+  .date-input-wrap input::-webkit-calendar-picker-indicator { filter: invert(1); }
+
+  .btn-magic {
+    background: linear-gradient(135deg, #b67fe0, #e882ac, #f7c84a);
+    background-size: 200% 200%;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 14px 36px;
+    cursor: pointer;
+    animation: gradShift 3s ease infinite;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 24px rgba(182,127,224,0.4);
+    letter-spacing: 0.5px;
+  }
+  .btn-magic:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 32px rgba(182,127,224,0.55); }
+  .btn-magic:active { transform: scale(0.98); }
+
+  @keyframes gradShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  #moon-loader {
+    display: none;
+    margin-top: 24px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #c8b4e8;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  #moon-result {
+    display: none;
+    margin-top: 28px;
+    text-align: center;
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .moon-display {
+    width: 140px; height: 140px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(200,180,232,0.5), 0 0 80px rgba(200,180,232,0.2);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: #0d1b3e;
+  }
+
+  .moon-display svg { width: 100%; height: 100%; }
+
+  .age-display {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .moon-phase-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #e8d5ff;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .moon-message {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: #d4b8f0;
+    line-height: 1.6;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  /* ===== SECTION 2: HAPPY BIRTHDAY ===== */
+  #section-birthday {
+    background: linear-gradient(135deg, #fff0f8, #ffeaff, #fff0e6);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hb-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 7vw, 4.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #b67fe0, #e882ac, #f7c84a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    animation: bounceIn 1s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    margin-bottom: 12px;
+  }
+
+  @keyframes bounceIn {
+    0% { opacity:0; transform:scale(0.5); }
+    60% { transform:scale(1.08); }
+    100% { opacity:1; transform:scale(1); }
+  }
+
+  .hb-sub {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--text-mid);
+    margin-bottom: 8px;
+  }
+
+  .hb-sass {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #c05080;
+    margin-bottom: 40px;
+    background: rgba(255,200,220,0.3);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+  }
+
+  /* CAKE */
+  .cake-wrap {
+    position: relative;
+    margin: 0 auto 24px;
+    width: 200px;
+  }
+
+  .cake-svg { width: 200px; }
+
+  .candle-flame {
+    animation: flicker 0.3s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+  }
+  @keyframes flicker {
+    from { transform: scaleY(1) scaleX(1); }
+    to { transform: scaleY(1.15) scaleX(0.9); }
+  }
+
+  #blow-btn {
+    background: linear-gradient(135deg, #ff85b3, #f7c84a);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    padding: 12px 28px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255,133,179,0.4);
+    transition: transform 0.2s;
+    margin-top: 8px;
+  }
+  #blow-btn:hover { transform: scale(1.05); }
+
+  .balloon-container {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .balloon {
+    position: absolute;
+    bottom: -80px;
+    font-size: 2.5rem;
+    animation: rise var(--dur) ease-in forwards var(--delay);
+  }
+  @keyframes rise {
+    0% { opacity:1; transform: translateY(0) rotate(0deg); }
+    100% { opacity:0; transform: translateY(-110vh) rotate(20deg); }
+  }
+
+  .emoji-burst {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0;
+  }
+
+  /* ===== SECTION 3: GALLERY ===== */
+  #section-gallery {
+    background: linear-gradient(135deg, #fef5ff, #fff0f5, #fff8ee);
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  .gallery-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--deep-purple);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .gallery-sub {
+    font-family: 'Caveat', cursive;
+    color: var(--text-mid);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+  }
+
+  .carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 0;
+    cursor: grab;
+  }
+  .carousel-wrapper:active { cursor: grabbing; }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    padding: 0 40px;
+    transition: transform 0.1s ease;
+    user-select: none;
+  }
+
+  .card-flip {
+    min-width: 240px;
+    height: 320px;
+    perspective: 1000px;
+    flex-shrink: 0;
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4,0.2,0.2,1);
+    transform-style: preserve-3d;
+  }
+  .card-flip:hover .card-inner,
+  .card-flip.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  .card-front {
+    background: #ddd;
+  }
+  .card-front img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .card-front .overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(50,10,70,0.85));
+    padding: 20px 16px 16px;
+    text-align: left;
+  }
+  .card-front .overlay h3 {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #f5e6ff, #ffe6f0);
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  .card-back p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--deep-purple);
+    line-height: 1.5;
+  }
+
+  .carousel-hint {
+    font-family: 'Caveat', cursive;
+    color: var(--text-mid);
+    margin-top: 16px;
+    font-size: 0.95rem;
+    opacity: 0.7;
+  }
+
+  /* ===== SECTION 4: LETTER ===== */
+  #section-letter {
+    background: linear-gradient(135deg, #f0ebe8, #f9f4ef, #fff5f0);
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .letter-intro {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--text-mid);
+    font-style: italic;
+    margin-bottom: 40px;
+  }
+
+  .envelope-wrap {
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 40px;
+  }
+
+  .envelope-svg {
+    width: 160px;
+    filter: drop-shadow(0 12px 32px rgba(200,150,100,0.3));
+    transition: transform 0.3s;
+  }
+  .envelope-wrap:hover .envelope-svg { transform: scale(1.05) translateY(-4px); }
+
+  .envelope-hint {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--text-mid);
+    margin-top: 8px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  #letter-content {
+    display: none;
+    max-width: 600px;
+    width: 100%;
+    background: #fffcf8;
+    border: 1px solid rgba(200,150,100,0.2);
+    border-radius: 16px;
+    padding: 48px 44px;
+    text-align: left;
+    box-shadow: 0 20px 60px rgba(200,150,100,0.15), inset 0 0 40px rgba(255,235,200,0.3);
+    position: relative;
+    line-height: 1.8;
+  }
+
+  #letter-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--peach), var(--gold), var(--blush));
+    border-radius: 16px 16px 0 0;
+  }
+
+  .letter-line {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-dark);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin-bottom: 8px;
+  }
+  .letter-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .letter-line em { font-style: italic; color: var(--soft-pink); }
+
+  .letter-postscript {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text-mid);
+    text-align: center;
+    margin-top: 32px;
+    font-style: italic;
+  }
+
+  /* ===== SECTION 5: BLESSINGS ===== */
+  #section-blessings {
+    background: linear-gradient(135deg, #fff8ee, #fef5ff, #f0ffe8);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .petals-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .petal {
+    position: absolute;
+    top: -30px;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: petalFall var(--dur, 6s) ease-in infinite var(--delay, 0s);
+  }
+  @keyframes petalFall {
+    0% { opacity: 0; transform: translateY(0) rotate(0deg) translateX(0); }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(100vh) rotate(360deg) translateX(60px); }
+  }
+
+  .blessing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: var(--deep-purple);
+    font-style: italic;
+    margin-bottom: 40px;
+  }
+
+  .blessing-text {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--text-dark);
+    line-height: 2;
+    max-width: 560px;
+    width: 100%;
+  }
+
+  .blessing-text p { margin-bottom: 8px; }
+
+  .blessing-sign {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text-mid);
+    margin-top: 32px;
+    font-style: italic;
+  }
+
+  .final-line {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--soft-pink);
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .btn-share {
+    background: linear-gradient(135deg, var(--lavender), var(--blush));
+    border: none;
+    border-radius: 50px;
+    color: var(--deep-purple);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    padding: 12px 28px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(200,180,232,0.4);
+  }
+  .btn-share:hover { transform: scale(1.05); }
+
+  /* ===== GENIE WIDGET ===== */
+  #genie-btn {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--lavender), var(--gold));
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 6px 24px rgba(182,127,224,0.4);
+    transition: transform 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #genie-btn:hover { transform: scale(1.1) rotate(-10deg); }
+
+  #genie-bubble {
+    position: fixed;
+    bottom: 96px; right: 24px;
+    width: min(320px, calc(100vw - 48px));
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200,180,232,0.4);
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 20px 60px rgba(92,61,122,0.2);
+    display: none;
+    animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn {
+    from { opacity:0; transform:scale(0.8) translateY(20px); }
+    to { opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  .genie-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--deep-purple);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .genie-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .genie-msg {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    line-height: 1.4;
+    animation: fadeInUp 0.4s ease;
+  }
+  .genie-msg.user {
+    background: linear-gradient(135deg, var(--lavender), var(--blush));
+    color: var(--deep-purple);
+    align-self: flex-end;
+    max-width: 80%;
+  }
+  .genie-msg.genie {
+    background: linear-gradient(135deg, #fff0e0, #fff5cc);
+    color: var(--text-dark);
+    align-self: flex-start;
+    max-width: 90%;
+  }
+
+  .genie-input-row {
+    display: flex;
+    gap: 8px;
+  }
+  .genie-input-row input {
+    flex: 1;
+    border: 1px solid rgba(200,180,232,0.5);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--text-dark);
+    outline: none;
+    background: rgba(255,255,255,0.8);
+  }
+  .genie-input-row input:focus { border-color: var(--lavender); }
+  .genie-input-row button {
+    background: linear-gradient(135deg, var(--lavender), var(--gold));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+
+  /* ===== UTILITIES ===== */
+  .section-spacer { height: 60px; }
+
+  @media (max-width: 600px) {
+    .moon-card { padding: 36px 24px; }
+    #letter-content { padding: 32px 24px; }
+    .card-flip { min-width: 200px; height: 280px; }
+    .carousel-track { padding: 0 20px; }
+  }
+
+  /* WAX SEAL */
+  .wax-seal {
+    position: absolute;
+    top: -20px; left: 50%;
+    transform: translateX(-50%);
+    width: 50px; height: 50px;
+    background: radial-gradient(circle at 40% 40%, #e05050, #900);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #ffd;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(150,0,0,0.3);
+    transition: transform 0.5s, opacity 0.5s;
+    cursor: pointer;
+  }
+  .wax-seal.broken {
+    transform: translateX(-50%) scale(1.5) rotate(30deg);
+    opacity: 0;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 100px; left: 50%; transform: translateX(-50%);
+    background: var(--deep-purple);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<button id="music-btn" title="Toggle music" onclick="toggleMusic()">🎵</button>
+<audio id="bg-music" loop></audio>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================== SECTION 1: MOON ===================== -->
+<section id="section-moon">
+  <div class="star-field" id="star-field"></div>
+
+  <div class="moon-card fade-in">
+    <div style="font-size:2.5rem;margin-bottom:12px;">🌙✨</div>
+    <h2>Apo, Let's Time Travel First</h2>
+    <p class="subtitle">When exactly did this magical human arrive?</p>
+
+    <div class="date-input-wrap">
+      <label for="bday-input">Your Birth Date</label>
+      <input type="date" id="bday-input" value="2000-05-14">
+    </div>
+
+    <button class="btn-magic" onclick="revealMoon()">🔭 Reveal the Sky</button>
+
+    <div id="moon-loader">🌌 Looking up at the universe...</div>
+
+    <div id="moon-result">
+      <div class="moon-display" id="moon-img-wrap"></div>
+      <div class="age-display" id="age-display"></div>
+      <div class="moon-phase-name" id="moon-phase-name"></div>
+      <div class="moon-message" id="moon-message"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: BIRTHDAY ===================== -->
+<section id="section-birthday">
+  <div class="balloon-container" id="balloons"></div>
+
+  <div class="fade-in" style="position:relative;z-index:1;text-align:center;">
+    <h1 class="hb-headline">HAPPY 26TH BIRTHDAY,<br>APO! 🎂🎈</h1>
+    <p class="hb-sub">The world got 26× more awesome the day you arrived.</p>
+    <p class="hb-sass">26? More like 21 with 5 years of bonus sass. 😏</p>
+
+    <div class="cake-wrap">
+      <svg class="cake-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" id="cake-svg">
+        <!-- Plate -->
+        <ellipse cx="100" cy="168" rx="85" ry="8" fill="#f0d0b0" opacity="0.5"/>
+        <!-- Base tier -->
+        <rect x="25" y="120" width="150" height="44" rx="10" fill="#f9b8d0"/>
+        <rect x="25" y="118" width="150" height="8" rx="4" fill="#f7a0c0"/>
+        <!-- Top tier -->
+        <rect x="45" y="84" width="110" height="40" rx="8" fill="#c8a0e8"/>
+        <rect x="45" y="82" width="110" height="8" rx="4" fill="#b890d8"/>
+        <!-- Frosting drips -->
+        <path d="M45 90 Q55 100 65 90 Q75 100 85 90 Q95 100 105 90 Q115 100 125 90 Q135 100 145 90 Q155 100 155 90" fill="none" stroke="white" stroke-width="4" opacity="0.6"/>
+        <!-- Decorations -->
+        <circle cx="65" cy="130" r="5" fill="#f7c84a"/>
+        <circle cx="100" cy="128" r="5" fill="#82e8a0"/>
+        <circle cx="135" cy="130" r="5" fill="#e882ac"/>
+        <!-- Candles (just a few representative ones) -->
+        <g id="candles"></g>
+      </svg>
+      <button id="blow-btn" onclick="blowCandles()">💨 Blow the Candles, Apo!</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: GALLERY ===================== -->
+<section id="section-gallery">
+  <div class="fade-in" style="width:100%">
+    <h2 class="gallery-title">The Apo Hall of Fame 📸</h2>
+    <p class="gallery-sub">Hover or tap a card to see the real truth 💖</p>
+
+    <div class="carousel-wrapper" id="carousel">
+      <div class="carousel-track" id="carousel-track"></div>
+    </div>
+    <p class="carousel-hint">← drag to explore →</p>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: LETTER ===================== -->
+<section id="section-letter">
+  <div class="fade-in" style="display:flex;flex-direction:column;align-items:center;width:100%">
+    <p class="letter-intro">Apo, you've got mail...<br>from the future. 💌</p>
+
+    <div class="envelope-wrap" id="envelope-wrap" onclick="openEnvelope()">
+      <svg class="envelope-svg" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="25" width="150" height="80" rx="8" fill="#f5e6d0" stroke="#d4b090" stroke-width="1.5"/>
+        <path d="M5 25 L80 75 L155 25" fill="none" stroke="#d4b090" stroke-width="1.5"/>
+        <path d="M5 25 L55 60" fill="none" stroke="#d4b090" stroke-width="1"/>
+        <path d="M155 25 L105 60" fill="none" stroke="#d4b090" stroke-width="1"/>
+        <path d="M5 105 L55 60 L105 60 L155 105" fill="none" stroke="#d4b090" stroke-width="1"/>
+      </svg>
+      <p class="envelope-hint">✨ Click to open ✨</p>
+    </div>
+
+    <div id="letter-content" style="position:relative;">
+      <div class="wax-seal" id="wax-seal" onclick="breakSeal(event)">💌</div>
+      <div id="letter-lines"></div>
+      <p class="letter-postscript">You are so loved, Apo. Right here. Right now. 💖</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 5: BLESSINGS ===================== -->
+<section id="section-blessings">
+  <div class="petals-container" id="petals"></div>
+
+  <div class="fade-in" style="display:flex;flex-direction:column;align-items:center;z-index:1;">
+    <div style="font-size:3rem;margin-bottom:16px;">🙏✨</div>
+    <h2 class="blessing-title">A little prayer for you, Apo.</h2>
+
+    <div class="blessing-text">
+      <p>May the universe always be gentle with your heart.</p>
+      <p>May laughter follow you like a shadow on sunny days.</p>
+      <p>May you always find light in the dark, and strength in the quiet.</p>
+      <p>May every year ahead be filled with wild joy, deep peace,</p>
+      <p>and love that surprises you.</p>
+      <br>
+      <p style="color:var(--soft-pink);font-size:1.3em;">You are a blessing, Apo. Never forget that.</p>
+      <p style="color:var(--deep-purple);font-weight:600;">Happy 26th. The best is yet to come. 🌟</p>
+    </div>
+
+    <p class="blessing-sign">— With all my heart, <span id="your-name-span"></span></p>
+
+    <p class="final-line" id="final-line">Thank you for being born, Apo. 🌸</p>
+
+    <button class="btn-share" onclick="sharePage()">💫 Share the Love</button>
+  </div>
+</section>
+
+<!-- ===================== GENIE ===================== -->
+<button id="genie-btn" onclick="toggleGenie()" title="Ask Apo's Birthday Genie">🧞‍♀️</button>
+
+<div id="genie-bubble">
+  <p class="genie-title">✨ Apo's Birthday Genie ✨</p>
+  <div class="genie-messages" id="genie-messages">
+    <div class="genie-msg genie">Hello, Apo! 🎂 Ask me anything about your birthday destiny!</div>
+  </div>
+  <div class="genie-input-row">
+    <input type="text" id="genie-input" placeholder="Ask the genie..." onkeydown="if(event.key==='Enter')askGenie()">
+    <button onclick="askGenie()">✨</button>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIG ====================
+const YOUR_NAME_VALUE = typeof YOUR_NAME !== 'undefined' ? YOUR_NAME : "Your Favourite Person";
+document.getElementById('your-name-span').textContent = YOUR_NAME_VALUE;
+
+// ==================== PARTICLES ====================
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function createParticle() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 0.5,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: -Math.random() * 0.4 - 0.1,
+    alpha: Math.random(),
+    color: ['#f7c84a','#e8c8ff','#ffb3cc','#ffd4b3'][Math.floor(Math.random()*4)]
+  };
+}
+
+for (let i = 0; i < 60; i++) particles.push(createParticle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p, i) => {
+    p.x += p.vx; p.y += p.vy;
+    p.alpha += 0.003;
+    if (p.y < -10 || p.alpha > 1.2) particles[i] = createParticle();
+    const a = Math.sin(p.alpha * Math.PI) * 0.5;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = a;
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ==================== STARS ====================
+const sf = document.getElementById('star-field');
+for (let i = 0; i < 120; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
+  sf.appendChild(s);
+}
+
+// ==================== MUSIC ====================
+const audio = document.getElementById('bg-music');
+if (typeof MUSIC_SRC !== 'undefined' && MUSIC_SRC) audio.src = MUSIC_SRC;
+let musicPlaying = false;
+
+function toggleMusic() {
+  if (!audio.src || audio.src === location.href) { showToast("Add a music file to the MUSIC_SRC config! 🎵"); return; }
+  if (musicPlaying) { audio.pause(); document.getElementById('music-btn').textContent = '🎵'; }
+  else { audio.play(); document.getElementById('music-btn').textContent = '🔇'; }
+  musicPlaying = !musicPlaying;
+}
+
+// ==================== SCROLL ANIMATIONS ====================
+const fadeEls = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15 });
+fadeEls.forEach(el => observer.observe(el));
+
+// ==================== MOON PHASE ====================
+const MOON_PHASES = ['New Moon','Waxing Crescent','First Quarter','Waxing Gibbous','Full Moon','Waning Gibbous','Last Quarter','Waning Crescent'];
+
+const MOON_MESSAGES = {
+  'New Moon': "You arrived in the quiet dark — a new beginning. The universe was holding its breath for you, Apo. Every new chapter starts with you. 🌑",
+  'Waxing Crescent': "You came as the moon was beginning to grow — just like your dreams. Keep rising, beautiful. The light is just getting started. 🌒",
+  'First Quarter': "Half lit, half mystery — the moon was perfectly balanced when you arrived. Just like you: full of light AND depth. 🌓",
+  'Waxing Gibbous': "The moon was almost full, almost there — brimming with potential the night you arrived. That energy? It never left you. 🌔",
+  'Full Moon': "You arrived when the world was brightest, Apo. You've been lighting up lives ever since. Shine on. 🌕",
+  'Waning Gibbous': "The moon was glowing and generous when you were born. You inherited that — you give so much of yourself. Thank you. 🌖",
+  'Last Quarter': "Balanced between giving and resting — the moon knew you'd master both. Rest when you need to. You've earned it. 🌗",
+  'Waning Crescent': "The moon was wise and winding down to begin again when you arrived. You carry that ancient grace — always ready to bloom anew. 🌘"
+};
+
+const MOON_SVGS = {
+  'New Moon': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1a1a3e"/><circle cx="50" cy="50" r="44" fill="none" stroke="#4040a0" stroke-width="1.5"/></svg>`,
+  'Waxing Crescent': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1a1a3e"/><path d="M50 5 A45 45 0 0 1 50 95 A30 30 0 0 0 50 5" fill="#f5e8b0"/></svg>`,
+  'First Quarter': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1a1a3e"/><path d="M50 5 A45 45 0 0 1 50 95 Z" fill="#f5e8b0"/></svg>`,
+  'Waxing Gibbous': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#f5e8b0"/><path d="M50 5 A45 45 0 0 0 50 95 A20 20 0 0 1 50 5" fill="#1a1a3e"/></svg>`,
+  'Full Moon': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="fg" cx="40%" cy="35%"><stop offset="0%" stop-color="#fffce8"/><stop offset="60%" stop-color="#f5e8b0"/><stop offset="100%" stop-color="#e0c870"/></radialGradient></defs><circle cx="50" cy="50" r="45" fill="url(#fg)"/><circle cx="35" cy="38" r="6" fill="rgba(200,180,80,0.3)"/><circle cx="60" cy="55" r="8" fill="rgba(200,180,80,0.2)"/><circle cx="42" cy="62" r="5" fill="rgba(200,180,80,0.25)"/></svg>`,
+  'Waning Gibbous': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#f5e8b0"/><path d="M50 5 A45 45 0 0 1 50 95 A20 20 0 0 0 50 5" fill="#1a1a3e"/></svg>`,
+  'Last Quarter': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1a1a3e"/><path d="M50 5 A45 45 0 0 0 50 95 Z" fill="#f5e8b0"/></svg>`,
+  'Waning Crescent': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="#1a1a3e"/><path d="M50 5 A45 45 0 0 0 50 95 A30 30 0 0 1 50 5" fill="#f5e8b0"/></svg>`
+};
+
+function getMoonPhase(date) {
+  // Known new moon reference: Jan 6, 2000 18:14 UTC
+  const refDate = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
+  const diff = date - refDate;
+  const daysDiff = diff / (1000 * 60 * 60 * 24);
+  const synodicMonth = 29.53058867;
+  let phase = ((daysDiff % synodicMonth) + synodicMonth) % synodicMonth;
+  const idx = Math.floor(phase / synodicMonth * 8) % 8;
+  return MOON_PHASES[idx];
+}
+
+function calcAge(bday) {
+  const now = new Date();
+  let years = now.getFullYear() - bday.getFullYear();
+  let months = now.getMonth() - bday.getMonth();
+  let days = now.getDate() - bday.getDate();
+  if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if (months < 0) { years--; months += 12; }
+  return { years, months, days };
+}
+
+function revealMoon() {
+  const input = document.getElementById('bday-input').value;
+  if (!input) { showToast('Please enter your birth date! 🌙'); return; }
+  const bday = new Date(input);
+  const loader = document.getElementById('moon-loader');
+  const result = document.getElementById('moon-result');
+  loader.style.display = 'block';
+  result.style.display = 'none';
+
+  setTimeout(() => {
+    const phase = getMoonPhase(bday);
+    const age = calcAge(bday);
+    loader.style.display = 'none';
+    document.getElementById('moon-img-wrap').innerHTML = MOON_SVGS[phase] || MOON_SVGS['Full Moon'];
+    document.getElementById('age-display').textContent = `🎂 ${age.years} years, ${age.months} months & ${age.days} days of pure magic`;
+    document.getElementById('moon-phase-name').textContent = `🌙 Born under a ${phase}`;
+    document.getElementById('moon-message').textContent = MOON_MESSAGES[phase] || MOON_MESSAGES['Full Moon'];
+    result.style.display = 'block';
+    spawnStarBurst();
+  }, 1800);
+}
+
+function spawnStarBurst() {
+  const wrap = document.getElementById('moon-img-wrap');
+  const rect = wrap.getBoundingClientRect();
+  for (let i = 0; i < 12; i++) {
+    const star = document.createElement('div');
+    star.style.cssText = `position:fixed;top:${rect.top + rect.height/2}px;left:${rect.left + rect.width/2}px;font-size:${14+Math.random()*10}px;pointer-events:none;z-index:999;transition:all 0.8s ease;`;
+    star.textContent = ['⭐','✨','💫','🌟'][Math.floor(Math.random()*4)];
+    document.body.appendChild(star);
+    setTimeout(() => {
+      const angle = (i/12)*360*Math.PI/180;
+      const dist = 80 + Math.random()*60;
+      star.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
+      star.style.opacity = '0';
+    }, 50);
+    setTimeout(() => star.remove(), 900);
+  }
+}
+
+// ==================== CAKE ====================
+(function buildCake() {
+  const g = document.getElementById('candles');
+  const positions = [35, 47, 59, 71, 83, 95, 107, 119, 131, 143];
+  positions.forEach((x, i) => {
+    if (i >= 10) return;
+    const id = `flame-${i}`;
+    g.innerHTML += `
+      <rect x="${x-2}" y="${66 - (i%2)*4}" width="4" height="12" fill="${['#ff85b3','#b67fe0','#82d8e8','#f7c84a'][i%4]}"/>
+      <ellipse class="candle-flame" id="${id}" cx="${x}" cy="${63 - (i%2)*4}" rx="3" ry="4" fill="#ffcc44" opacity="0.95" style="animation-delay:${i*0.07}s"/>
+    `;
+  });
+})();
+
+let candlesBlown = false;
+function blowCandles() {
+  if (candlesBlown) return;
+  candlesBlown = true;
+  document.querySelectorAll('.candle-flame').forEach((el, i) => {
+    setTimeout(() => { el.style.animation = 'none'; el.setAttribute('fill','#aaa'); el.setAttribute('opacity','0.3'); }, i*80);
+  });
+  confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 }, colors: ['#f7c84a','#e882ac','#b67fe0','#82e8a0','#ff85b3'] });
+  document.getElementById('blow-btn').textContent = '🎉 Yay! Happy Birthday!';
+  showToast('🎂 Make a wish, Apo! ✨');
+}
+
+// ==================== BALLOONS ====================
+function launchBalloons() {
+  const container = document.getElementById('balloons');
+  container.innerHTML = '';
+  const emojis = ['🎈','🎈','🎈','🎉','💖','🎈'];
+  for (let i = 0; i < 12; i++) {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.textContent = emojis[i % emojis.length];
+    b.style.left = (5 + Math.random() * 90) + '%';
+    b.style.setProperty('--dur', (4 + Math.random() * 4) + 's');
+    b.style.setProperty('--delay', (Math.random() * 3) + 's');
+    container.appendChild(b);
+  }
+}
+
+const bdaySection = document.getElementById('section-birthday');
+const bdayObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    launchBalloons();
+    confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 } });
+    bdayObserver.unobserve(bdaySection);
+  }
+}, { threshold: 0.3 });
+bdayObserver.observe(bdaySection);
+
+// ==================== GALLERY ====================
+const GALLERY_DATA = [
+  { img: 'https://picsum.photos/seed/apo1/400/500', funny: 'Chief Overthinker Since 2000', sweet: 'But honestly? Your mind is a wonder. Every thought you have matters. 💖' },
+  { img: 'https://picsum.photos/seed/apo2/400/500', funny: "Queen of '5 More Minutes'", sweet: "Your love of rest is valid. You recharge so you can shine even brighter. 🌟" },
+  { img: 'https://picsum.photos/seed/apo3/400/500', funny: 'Snack Hoarder Extraordinaire', sweet: "You share your snacks AND your heart. The most generous soul I know. 🍰" },
+  { img: 'https://picsum.photos/seed/apo4/400/500', funny: "Dancing Like Nobody's Watching (But Everyone Is)", sweet: "Your joy is contagious. Never stop dancing, Apo. The world needs it. 💃" },
+  { img: 'https://picsum.photos/seed/apo5/400/500', funny: 'Professional Dream Chaser', sweet: "Every dream you chase becomes real because YOU chase it. Keep going. ✨" },
+  { img: 'https://picsum.photos/seed/apo6/400/500', funny: 'The Sass Master General', sweet: "Your wit is your superpower. You make every room sparkle. 😏💕" }
+];
+
+const track = document.getElementById('carousel-track');
+GALLERY_DATA.forEach((item, i) => {
+  track.innerHTML += `
+    <div class="card-flip" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="${item.img}" alt="Apo ${i+1}" loading="lazy">
+          <div class="overlay"><h3>${item.funny}</h3></div>
+        </div>
+        <div class="card-back"><p>${item.sweet}</p></div>
+      </div>
+    </div>`;
+});
+
+// Drag scroll
+const carouselEl = document.getElementById('carousel');
+let isDragging = false, startX, scrollLeft;
+carouselEl.addEventListener('mousedown', e => { isDragging=true; startX=e.pageX-carouselEl.offsetLeft; scrollLeft=carouselEl.scrollLeft; });
+carouselEl.addEventListener('mouseleave', () => isDragging=false);
+carouselEl.addEventListener('mouseup', () => isDragging=false);
+carouselEl.addEventListener('mousemove', e => { if(!isDragging) return; e.preventDefault(); carouselEl.scrollLeft = scrollLeft-(e.pageX-carouselEl.offsetLeft-startX); });
+
+// Touch drag
+let touchStartX = 0, touchScrollLeft = 0;
+carouselEl.addEventListener('touchstart', e => { touchStartX=e.touches[0].clientX; touchScrollLeft=carouselEl.scrollLeft; });
+carouselEl.addEventListener('touchmove', e => { carouselEl.scrollLeft = touchScrollLeft-(e.touches[0].clientX-touchStartX); });
+
+// ==================== LETTER ====================
+const LETTER_LINES = [
+  "My beautiful 26-year-old Apo,",
+  "",
+  "I know you're sitting there, probably overthinking something,",
+  "probably holding a cup of coffee, probably wondering if you're doing enough.",
+  "Let me tell you — you are.",
+  "",
+  "You are doing so, so beautifully.",
+  "Every stumble, every laugh, every late-night thought —",
+  "it's all weaving into a life that is uniquely, gorgeously yours.",
+  "",
+  "I look back at you now, with all your dreams swirling like fireflies,",
+  "and I'm so proud. So endlessly proud.",
+  "",
+  "Keep dancing in the kitchen.",
+  "Keep loving with that huge, tender heart of yours.",
+  "Keep dreaming. Trust me, it all works out more wonderfully than you can imagine.",
+  "",
+  "Thank you for being brave enough to be you.",
+  "",
+  "With all my love,",
+  "Apo (from 2050) — who still dances, by the way. 💃"
+];
+
+let envelopeOpened = false;
+function openEnvelope() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+  document.getElementById('envelope-wrap').style.opacity = '0.3';
+  document.getElementById('envelope-wrap').style.pointerEvents = 'none';
+  const lc = document.getElementById('letter-content');
+  lc.style.display = 'block';
+  const ll = document.getElementById('letter-lines');
+  ll.innerHTML = '';
+  LETTER_LINES.forEach((line, i) => {
+    const div = document.createElement('div');
+    div.className = 'letter-line';
+    div.innerHTML = line || '&nbsp;';
+    ll.appendChild(div);
+    setTimeout(() => div.classList.add('visible'), 300 + i * 180);
+  });
+}
+
+function breakSeal(e) {
+  e.stopPropagation();
+  document.getElementById('wax-seal').classList.add('broken');
+}
+
+// ==================== PETALS ====================
+const petalContainer = document.getElementById('petals');
+const petalEmojis = ['🌸','🌺','✨','🌷','💮','🌼'];
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = petalEmojis[Math.floor(Math.random()*petalEmojis.length)];
+  p.style.left = Math.random()*100 + '%';
+  p.style.setProperty('--dur', (4+Math.random()*6)+'s');
+  p.style.setProperty('--delay', (Math.random()*8)+'s');
+  p.style.fontSize = (0.8+Math.random()*0.8)+'rem';
+  petalContainer.appendChild(p);
+}
+
+// Final line observer
+const blessSection = document.getElementById('section-blessings');
+const blessObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    setTimeout(() => {
+      document.getElementById('final-line').style.opacity = '1';
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.7 }, colors: ['#f7c84a','#ffb3cc','#e8c8ff','#b3ffd4'] });
+    }, 1500);
+    blessObserver.unobserve(blessSection);
+  }
+}, { threshold: 0.5 });
+blessObserver.observe(blessSection);
+
+// ==================== SHARE ====================
+function sharePage() {
+  navigator.clipboard.writeText(location.href).then(() => showToast('💖 Link copied! Share the love!')).catch(() => showToast('Share this page URL with Apo! 🎉'));
+}
+
+// ==================== GENIE ====================
+const GENIE_RESPONSES = [
+  "Apo, the genie confirms: cake calories do NOT count on birthdays. Eat up. 🍰",
+  "Genie says: You are 26, but your aura is giving ✨timeless goddess✨.",
+  "The stars whispered: Dance breaks are mandatory today. 💃",
+  "Ancient genie wisdom: You deserve every good thing coming your way. No exceptions.",
+  "🔮 The universe says: Rest is also productive. Especially on your birthday.",
+  "Genie prediction: At least three people will think of you fondly today without telling you. 💖",
+  "Confirmed by the cosmos: You are doing WAY better than you think. 🌟",
+  "Birthday decree: All overthinking is hereby suspended until midnight. 😌",
+  "Genie law: You are 100% allowed to say 'I'm busy' today. You're celebrating existence.",
+  "The genie has spoken: Your laugh is someone's favourite sound. Fact. 🎵",
+  "🌙 Moon prediction: Big things are coming. Bigger than your wildest hope.",
+  "Official birthday ruling: You are more loved than you know. That's just math. 💕"
+];
+
+let genieIdx = 0;
+function toggleGenie() {
+  const bubble = document.getElementById('genie-bubble');
+  bubble.style.display = bubble.style.display === 'none' || !bubble.style.display ? 'block' : 'none';
+}
+
+function askGenie() {
+  const input = document.getElementById('genie-input');
+  const q = input.value.trim();
+  if (!q) return;
+  const msgs = document.getElementById('genie-messages');
+  
+  const userMsg = document.createElement('div');
+  userMsg.className = 'genie-msg user';
+  userMsg.textContent = q;
+  msgs.appendChild(userMsg);
+  input.value = '';
+
+  setTimeout(() => {
+    const genieMsg = document.createElement('div');
+    genieMsg.className = 'genie-msg genie';
+    genieMsg.textContent = GENIE_RESPONSES[genieIdx % GENIE_RESPONSES.length];
+    genieIdx++;
+    msgs.appendChild(genieMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ==================== INIT ====================
+// Auto-reveal moon on load for Apo's birthday
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const moonCard = document.querySelector('.moon-card');
+    if (moonCard) moonCard.classList.add('visible');
+  }, 200);
+});
+</script>
+</body>
+</html>
